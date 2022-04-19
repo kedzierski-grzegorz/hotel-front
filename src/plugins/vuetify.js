@@ -1,7 +1,6 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify/lib/framework';
+import 'vuetify/styles' // Global CSS has to be imported
+import '@mdi/font/css/materialdesignicons.css'
 
-Vue.use(Vuetify);
+import {createVuetify} from "vuetify";
 
-export default new Vuetify({
-});
+export default createVuetify({})
