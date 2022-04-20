@@ -1,9 +1,15 @@
 <template>
- <v-btn>Test</v-btn>
+  <h1>Home</h1>
 </template>
 
 <script>
-  export default {
-    name: 'HelloWorld',
-  }
+import logo from '../assets/logo.svg'
+
+export default {
+  name: 'HelloWorld',
+
+  data: () => ({
+
+  }),
+}
 </script>
