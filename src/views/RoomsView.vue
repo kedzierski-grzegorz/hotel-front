@@ -1,6 +1,6 @@
 <template>
     <v-container fluid>
-        <v-row v-bind:key="n" v-for="n in rooms.length">
+        <v-row v-bind:key="n" v-for="n in rooms.length"> <!-- In row we have max 3 column with 1 room card in each-->
             <v-col 
                 v-bind:key="rooms[n-1][m-1]"
                 v-for="m in rooms[n-1].length"
@@ -26,6 +26,7 @@ export default {
     data: () => ({
         rooms: [
             [{
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa_Oc-DoKyRc7pc3-32xQzefUjPycL3-w07g&usqp=CAU',
                 title: 'test title 1',
                 description: 'test description 1',
                 rating: 3,
@@ -34,6 +35,7 @@ export default {
                 extendedDescription: 'test extended description 1'
             },
             {
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa_Oc-DoKyRc7pc3-32xQzefUjPycL3-w07g&usqp=CAU',
                 title: 'test title 2',
                 description: 'test description 2',
                 rating: 4,
@@ -42,6 +44,7 @@ export default {
                 extendedDescription: 'test extended description 2'
             },
             {
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa_Oc-DoKyRc7pc3-32xQzefUjPycL3-w07g&usqp=CAU',
                 title: 'test title 3',
                 description: 'test description 3',
                 rating: 2,
@@ -50,6 +53,7 @@ export default {
                 extendedDescription: 'test extended description 3'
             }],
             [{
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa_Oc-DoKyRc7pc3-32xQzefUjPycL3-w07g&usqp=CAU',
                 title: 'test title 4',
                 description: 'test description 4',
                 rating: 5,
@@ -58,6 +62,7 @@ export default {
                 extendedDescription: 'test extended description 4'
             },                        
             {
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa_Oc-DoKyRc7pc3-32xQzefUjPycL3-w07g&usqp=CAU',
                 title: 'test title 5',
                 description: 'test description 5',
                 rating: 1,
@@ -66,7 +71,7 @@ export default {
                 extendedDescription: 'test extended description 5'
             }],
             
-        ], // Here will be rooms info from backend
+        ], // Here will be rooms info from backend but we need change db structure
     }),
 };
 </script>

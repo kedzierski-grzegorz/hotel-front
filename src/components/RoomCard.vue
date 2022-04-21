@@ -3,7 +3,8 @@
     >
     <!-- Here wil be room photo -->
         <v-img
-            src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+            :src=this.rooms.img
+            height="250px"
         ></v-img>
 
         <v-card-title>
