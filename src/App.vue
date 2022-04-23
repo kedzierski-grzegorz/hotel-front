@@ -1,6 +1,8 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="sidebar" app class="hidden-sm-and-up">
+    <!-- !!!  This code seems to be unused  !!! -->
+
+    <!-- <v-navigation-drawer v-model="sidebar" app class="hidden-sm-and-up">
       <v-list>
         <v-list-item
             v-for="item in menuItems"
@@ -12,7 +14,9 @@
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
+
+    <!-- !!!    !!! -->
 
     <v-toolbar app>
       <span class="hidden-sm-and-up">
@@ -55,7 +59,8 @@ export default {
     sidebar: false,
     menuItems: [
       { title: 'Home', path: '/', icon: 'home' },
-      { title: 'About', path: '/about', icon: 'face' }
+      { title: 'About', path: '/about', icon: 'face' },
+      { title: 'Test rooms', path: '/rooms' } 
     ]
   }),
 }
