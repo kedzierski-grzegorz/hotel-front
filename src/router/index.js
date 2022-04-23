@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import RoomsView from '../views/RoomsView.vue'
+import AdminView from "../views/admin/AdminView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,17 +14,60 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
     },
     {
       path: '/rooms',
       name: 'rooms',
-      component: RoomsView, 
+      component: RoomsView,
+    },
+    // {
+    //   path: '/admin/sign-in',
+    //   name: 'Admin/SignIn',
+    //   // component: AdminLoginView,
+    //   component: () => import('../views/admin/AdminLoginView.vue'),
+    // },
+    {
+      path: '/admin',
+      name: 'Admin',
+      component: AdminView,
+      children: [
+        {
+          path: 'sign-in',
+          name: 'Admin/SignIn',
+          component: () => import('../views/admin/AdminLoginView.vue'),
+        },
+        {
+          path: 'panel',
+          name: 'Admin/Panel',
+          component: () => import('../views/admin/AdminPanelView.vue')
+        }
+      ],
+      redirect: '/admin/sign-in'
     }
   ]
+})
+
+router.beforeEach(async (to, from, next) => {
+  if (to.path.startsWith('/admin/')) { // guard for admin panel
+    const isAuthenticated = false;
+
+    if (isAuthenticated) {
+      if (to.name === 'Admin/SignIn') {
+        next({name: 'Admin/Panel'})
+      } else {
+        next()
+      }
+    } else {
+      if (to.name === 'Admin/SignIn') {
+        next()
+      } else {
+        next({name: 'Admin/SignIn'})
+      }
+    }
+  } else {
+    next();
+  }
 })
 
 export default router
