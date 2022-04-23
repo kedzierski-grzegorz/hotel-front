@@ -25,8 +25,7 @@ export default {
   components: {AdminAppSidebar, MainAppSidebar},
   data: () => ({
     isMainApp: true,
-    isAdminApp: false,
-    sidebar: false
+    isAdminApp: false
   }),
 
   created() {
