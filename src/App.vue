@@ -26,12 +26,7 @@ export default {
   data: () => ({
     isMainApp: true,
     isAdminApp: false,
-    sidebar: false,
-    menuItems: [
-      { title: 'Home', path: '/', icon: 'home' },
-      { title: 'About', path: '/about', icon: 'face' },
-      { title: 'Test rooms', path: '/rooms' } 
-    ]
+    sidebar: false
   }),
 
   created() {

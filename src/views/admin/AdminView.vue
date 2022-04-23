@@ -1,10 +1,10 @@
 <template>
-  <h2>Panel</h2>
+  <router-view></router-view>
 </template>
 
 <script>
 export default {
-  name: "AdminPanel"
+name: "AdminView"
 }
 </script>
 

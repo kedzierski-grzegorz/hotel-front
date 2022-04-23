@@ -41,7 +41,8 @@ export default {
     menuItems: [
       { title: 'Home', path: '/', icon: 'home' },
       { title: 'About', path: '/about', icon: 'face' },
-      { title: 'Panel administracyjny', path: '/admin', icon: 'account-cog' },
+      { title: 'Test rooms', path: '/rooms' },
+      { title: 'Panel administracyjny', path: '/admin/panel', icon: 'account-cog' },
     ]
   }),
 }
