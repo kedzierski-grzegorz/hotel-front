@@ -1,10 +1,10 @@
 <template>
-  <h2>Panel</h2>
+  Reservations
 </template>
 
 <script>
 export default {
-  name: "AdminPanel"
+  name: "AdminReservationsView"
 }
 </script>
 

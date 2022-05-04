@@ -1,5 +1,8 @@
 <template>
   <v-app>
+    <Loading/>
+    <SnackabarInfo/>
+
     <MainAppSidebar v-if="isMainApp" />
     <AdminAppSidebar v-if="isAdminApp" />
 
@@ -19,10 +22,12 @@
 
 import MainAppSidebar from "./components/MainAppSidebar.vue";
 import AdminAppSidebar from "./components/AdminAppSidebar.vue";
+import Loading from "./components/Loading.vue";
+import SnackabarInfo from "./components/SnackabarInfo.vue";
 
 export default {
   name: 'App',
-  components: {AdminAppSidebar, MainAppSidebar},
+  components: {SnackabarInfo, Loading, AdminAppSidebar, MainAppSidebar},
   data: () => ({
     isMainApp: true,
     isAdminApp: false
