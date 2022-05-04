@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="sidebar" app class="hidden-sm-and-up">
+  <v-navigation-drawer v-if="showSidebar" v-model="sidebar" app class="hidden-sm-and-up">
     <v-list>
       <v-list-item
           v-for="item in menuItems"
@@ -12,7 +12,7 @@
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
-  <v-toolbar app>
+  <v-toolbar app v-if="showSidebar">
       <span class="hidden-sm-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar"></v-app-bar-nav-icon>
       </span>
@@ -40,11 +40,26 @@ export default {
   name: "AdminAppSidebar",
   data: () => ({
     sidebar: false,
+    showSidebar: false,
     menuItems: [
       { title: 'Home', path: '/', icon: 'home' },
       { title: 'About', path: '/about', icon: 'face' }
     ]
   }),
+  mounted() {
+    this.showCorrectSidebar();
+  },
+  watch:{
+    $route (to, from){
+      this.showCorrectSidebar();
+    }
+  },
+
+  methods: {
+    showCorrectSidebar() {
+      this.showSidebar = this.$route.name !== "Admin/SignIn";
+    }
+  }
 }
 </script>
 

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import RoomsView from '../views/RoomsView.vue'
 import AdminView from "../views/admin/AdminView.vue";
+import AdminService from "../services/admin.service";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,7 +51,8 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   if (to.path.startsWith('/admin/')) { // guard for admin panel
-    const isAuthenticated = false;
+    const sessionData = AdminService.getAdminSessionData();
+    const isAuthenticated = sessionData ?? sessionData.token;
 
     if (isAuthenticated) {
       if (to.name === 'Admin/SignIn') {

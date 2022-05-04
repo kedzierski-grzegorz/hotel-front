@@ -7,8 +7,9 @@ import AdminService from "../../services/admin.service";
 
 export default {
   name: "AdminLoginView",
-  mounted() {
-    AdminService.signIn('admin', 'admin');
+  async mounted() {
+    await AdminService.signIn('admin', 'admin');
+    await AdminService.test();
   }
 }
 </script>
