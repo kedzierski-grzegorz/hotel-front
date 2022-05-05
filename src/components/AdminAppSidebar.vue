@@ -4,6 +4,7 @@
       <v-list-item
           v-for="item in menuItems"
           :key="item.title"
+          @click="item.click ? item.click() : ''"
           :to="item.path">
         <v-list-item-action>
           <v-icon dark right>{{ 'mdi-' + item.icon }}</v-icon>
@@ -17,7 +18,7 @@
         <v-app-bar-nav-icon @click="sidebar = !sidebar"></v-app-bar-nav-icon>
       </span>
     <v-toolbar-title>
-      <router-link to="/" tag="span" style="cursor: pointer">
+      <router-link to="/admin" tag="span" style="cursor: pointer">
         Panel administracyjny
       </router-link>
     </v-toolbar-title>
@@ -27,6 +28,7 @@
         <v-btn
             v-for="item in menuItems"
             :key="item.title"
+            @click="item.click ? item.click() : ''"
             :to="item.path">
           {{ item.title }}
         </v-btn>
@@ -36,21 +38,28 @@
 </template>
 
 <script>
+import AdminService from "../services/admin.service";
+import SnackbarService from "../services/snackbar.service";
+
 export default {
   name: "AdminAppSidebar",
-  data: () => ({
-    sidebar: false,
-    showSidebar: false,
-    menuItems: [
-      { title: 'Home', path: '/', icon: 'home' },
-      { title: 'About', path: '/about', icon: 'face' }
-    ]
-  }),
+  data() {
+    return {
+      sidebar: false,
+      showSidebar: false,
+      menuItems: [
+        {title: 'Main page', path: '/', icon: 'home'},
+        {title: 'Rooms', path: '/admin/rooms', icon: 'bed'},
+        {title: 'Reservations', path: '/admin/reservations', icon: 'book-clock'},
+        {title: 'Logout', icon: 'power', click: this.logout.bind(this)}
+      ]
+    }
+  },
   mounted() {
     this.showCorrectSidebar();
   },
-  watch:{
-    $route (to, from){
+  watch: {
+    $route(to, from) {
       this.showCorrectSidebar();
     }
   },
@@ -58,6 +67,15 @@ export default {
   methods: {
     showCorrectSidebar() {
       this.showSidebar = this.$route.name !== "Admin/SignIn";
+    },
+
+    async logout() {
+      AdminService.logout();
+      SnackbarService.show({
+        text: "You have been logged out",
+        color: "Primary"
+      });
+      await this.$router.push('/admin/sign-in');
     }
   }
 }

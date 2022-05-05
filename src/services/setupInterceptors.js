@@ -5,9 +5,12 @@ const setup = () => {
     axiosInstance.interceptors.request.use(
         (config) => {
             if (config.url.startsWith("administration/")) {
-                const token = AdminService.getAdminSessionData().token;
-                if (token) {
-                    config.headers["Authorization"] = 'Bearer ' + token;
+                const sessionData = AdminService.getAdminSessionData();
+                if (sessionData) {
+                    const token = sessionData.token;
+                    if (token) {
+                        config.headers["Authorization"] = 'Bearer ' + token;
+                    }
                 }
             }
             return config;

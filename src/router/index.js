@@ -22,12 +22,6 @@ const router = createRouter({
       name: 'rooms',
       component: RoomsView,
     },
-    // {
-    //   path: '/admin/sign-in',
-    //   name: 'Admin/SignIn',
-    //   // component: AdminLoginView,
-    //   component: () => import('../views/admin/AdminLoginView.vue'),
-    // },
     {
       path: '/admin',
       name: 'Admin',
@@ -42,6 +36,16 @@ const router = createRouter({
           path: 'panel',
           name: 'Admin/Panel',
           component: () => import('../views/admin/AdminPanelView.vue')
+        },
+        {
+          path: 'rooms',
+          name: 'Admin/Rooms',
+          component: () => import('../views/admin/AdminRoomsView.vue')
+        },
+        {
+          path: 'reservations',
+          name: 'Admin/Reservations',
+          component: () => import('../views/admin/AdminReservationsView.vue')
         }
       ],
       redirect: '/admin/sign-in'
@@ -52,7 +56,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   if (to.path.startsWith('/admin/')) { // guard for admin panel
     const sessionData = AdminService.getAdminSessionData();
-    const isAuthenticated = sessionData ?? sessionData.token;
+    const isAuthenticated = sessionData && sessionData.token;
 
     if (isAuthenticated) {
       if (to.name === 'Admin/SignIn') {

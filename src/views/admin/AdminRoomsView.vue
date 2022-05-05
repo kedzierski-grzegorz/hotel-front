@@ -1,10 +1,10 @@
 <template>
-
+  Rooms
 </template>
 
 <script>
 export default {
-  name: "AdminLogin"
+  name: "AdminRoomsView"
 }
 </script>
 

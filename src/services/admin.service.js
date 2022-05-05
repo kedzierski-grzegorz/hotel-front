@@ -10,28 +10,19 @@ const AdminService = {
     },
 
     async signIn(loginOrEmail, password) {
-        try {
-            const result = await api.post(
-                this.baseHref + 'login',
-                {loginOrEmail, password}
-            );
+        const result = await api.post(
+            this.baseHref + 'login',
+            {loginOrEmail, password}
+        );
 
-            localStorage.setItem(this.userLocalStorageKey, JSON.stringify(result.data));
+        localStorage.setItem(this.userLocalStorageKey, JSON.stringify(result.data));
 
-            return result.data;
-        } catch (e) {
-            console.error(e);
-        }
+        return result.data;
     },
 
-    async test() {
-        try {
-            const result = await api.get(this.baseHref + 'test');
-            console.log(result);
-        } catch (e) {
-            console.error(e);
-        }
-    }
+    logout() {
+        localStorage.removeItem(this.userLocalStorageKey);
+    },
 };
 
 export default AdminService;
