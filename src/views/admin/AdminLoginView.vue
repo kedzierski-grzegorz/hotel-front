@@ -83,7 +83,7 @@ export default {
       LoadingService.hide();
 
       if (success) {
-        await this.$router.push('/admin/panel');
+        await this.$router.push('/admin/reservations');
       }
     }
   }
