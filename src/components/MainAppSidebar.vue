@@ -1,5 +1,18 @@
 <template>
   <v-navigation-drawer v-model="sidebar" app class="hidden-sm-and-up">
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="text-h6">
+          Welcome to our Hotel
+        </v-list-item-title>
+        <v-list-item-subtitle>
+          Book your room
+        </v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+
+    <v-divider></v-divider>
+
     <v-list>
       <v-list-item
           v-for="item in menuItems"
@@ -12,7 +25,7 @@
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
-  <v-toolbar app>
+  <v-app-bar app>
       <span class="hidden-sm-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar"></v-app-bar-nav-icon>
       </span>
@@ -30,7 +43,7 @@
         </v-btn>
       </v-toolbar-items>
     </div>
-  </v-toolbar>
+  </v-app-bar>
 </template>
 
 <script>
@@ -42,7 +55,7 @@ export default {
       { title: 'Home', path: '/', icon: 'home' },
       { title: 'About', path: '/about', icon: 'face' },
       { title: 'Test rooms', path: '/rooms' },
-      { title: 'Panel administracyjny', path: '/admin/panel', icon: 'account-cog' },
+      { title: 'Admin panel', path: '/admin/reservations', icon: 'account-cog' },
     ]
   }),
 }

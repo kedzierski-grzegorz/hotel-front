@@ -1,5 +1,18 @@
 <template>
   <v-navigation-drawer v-if="showSidebar" v-model="sidebar" app class="hidden-sm-and-up">
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="text-h6">
+          Admin panel
+        </v-list-item-title>
+        <v-list-item-subtitle>
+
+        </v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+
+    <v-divider></v-divider>
+
     <v-list>
       <v-list-item
           v-for="item in menuItems"
@@ -13,13 +26,13 @@
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
-  <v-toolbar app v-if="showSidebar">
+  <v-app-bar app v-if="showSidebar">
       <span class="hidden-sm-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar"></v-app-bar-nav-icon>
       </span>
     <v-toolbar-title>
       <router-link to="/admin" tag="span" style="cursor: pointer">
-        Panel administracyjny
+        Admin panel
       </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
@@ -34,7 +47,7 @@
         </v-btn>
       </v-toolbar-items>
     </div>
-  </v-toolbar>
+  </v-app-bar>
 </template>
 
 <script>
@@ -48,9 +61,8 @@ export default {
       sidebar: false,
       showSidebar: false,
       menuItems: [
-        {title: 'Main page', path: '/', icon: 'home'},
-        {title: 'Rooms', path: '/admin/rooms', icon: 'bed'},
         {title: 'Reservations', path: '/admin/reservations', icon: 'book-clock'},
+        {title: 'Rooms', path: '/admin/rooms', icon: 'bed'},
         {title: 'Logout', icon: 'power', click: this.logout.bind(this)}
       ]
     }
