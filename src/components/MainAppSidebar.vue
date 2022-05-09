@@ -54,7 +54,7 @@ export default {
     menuItems: [
       { title: 'Home', path: '/', icon: 'home' },
       { title: 'About', path: '/about', icon: 'face' },
-      { title: 'Test rooms', path: '/rooms' },
+      { title: 'Rooms', path: '/rooms' },
       { title: 'Admin panel', path: '/admin/reservations', icon: 'account-cog' },
     ]
   }),

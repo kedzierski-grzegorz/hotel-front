@@ -1,83 +1,89 @@
 <template>
-    <v-card
-    >
+<v-card>
+    <router-link :to="`/room/${this.room.room_id}`" style="text-decoration: none; color: inherit;">
     <!-- Here wil be room photo -->
         <v-img
-            :src=this.rooms.img
+            cover
+            :src=this.room.img
             height="250px"
         ></v-img>
 
         <v-card-title>
-            {{ this.rooms.title }}
+            {{ this.room.title }}
         </v-card-title>
 
         <v-card-subtitle>
-            {{ this.rooms.description }}
+            {{ this.room.description }}
         </v-card-subtitle>
 
-        <v-card-text>
-            <v-row
-                align="center"
-                class="mx-0"
-            >
-                <v-rating
-                    v-model=this.rooms.rating
-                    color="amber"
-                    half-increments
-                    length="5"
-                    readonly
-                    size="20"
-                ></v-rating>
-                <div class="grey--text ms-4">
-                    {{ this.rooms.rating }} ({{ this.rooms.countOfRatings }})
-                </div>
-            </v-row>
-        </v-card-text>
-
-        <v-card-text>
-            <v-row
-                align="center"
-                class="mx-0"
-            >
-                <p class="font-weight-black">
-                    $ {{ this.rooms.price }}
-                </p>
-                /night
-            </v-row>
-        </v-card-text>
-
-        <v-card-actions>
-            <v-btn text>
-                More
-            </v-btn>
-
-            <v-spacer></v-spacer>
-
-            <v-btn
-                icon
-                @click="show = !show"
-            >
-                <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-            </v-btn>
-        </v-card-actions>
-
-        <v-expand-transition>
-            <div v-show="show">
-                <v-divider></v-divider>
-
-                <v-card-text>
-                    {{ this.rooms.extendedDescription }}
-                </v-card-text>
+        <v-card-subtitle
+            id="rating"
+        >
+            <v-rating
+                v-model=this.room.rating
+                color="brown"
+                half-increments
+                length="5"
+                readonly
+                size="20"
+            ></v-rating>
+            <div class="grey--text ms-4">
+                {{ this.room.rating }} ({{ this.room.countOfRatings }})
             </div>
-        </v-expand-transition>
-    </v-card>
+        </v-card-subtitle>
+
+        <v-card-subtitle id="price" class="font-weight-black">
+            <p class="font-weight-black">
+                $ {{ this.room.price }}
+            </p>
+            /night
+        </v-card-subtitle>
+    </router-link>
+
+    <v-card-actions>
+        <v-btn text>
+            More
+        </v-btn>
+
+        <v-spacer></v-spacer>
+
+        <v-btn
+            icon
+            @click="show = !show"
+        >
+            <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+        </v-btn>
+    </v-card-actions>
+
+    <v-expand-transition>
+        <div v-show="show">
+            <v-divider></v-divider>
+
+            <v-card-text>
+                {{ this.room.extendedDescription }}
+            </v-card-text>
+        </div>
+    </v-expand-transition>
+</v-card>
 </template>
 
 <script>
 export default {
-    props: ['rooms'],
+    props: ['room'],
     data: () => ({
         show: false,
     }),
 }
 </script>
+
+<style scoped>
+#rating {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+#price {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+</style>
