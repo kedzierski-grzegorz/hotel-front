@@ -4,7 +4,7 @@
     <!-- Here wil be room photo -->
         <v-img
             cover
-            :src=this.room.img
+            :src=this.room.img_link
             height="250px"
         ></v-img>
 
@@ -28,7 +28,7 @@
                 size="20"
             ></v-rating>
             <div class="grey--text ms-4">
-                {{ this.room.rating }} ({{ this.room.countOfRatings }})
+                {{ this.room.rating }} ({{ this.room.countOfRatings - 1 }})
             </div>
         </v-card-subtitle>
 
@@ -60,7 +60,7 @@
             <v-divider></v-divider>
 
             <v-card-text>
-                {{ this.room.extendedDescription }}
+                {{ this.room.extended_description }}
             </v-card-text>
         </div>
     </v-expand-transition>
@@ -73,7 +73,7 @@ export default {
     props: ['room'],
     data: () => ({
         show: false,
-    }),
+    })
 }
 </script>
 

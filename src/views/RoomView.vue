@@ -5,13 +5,13 @@
         cover
         max-height="450px"
         max-width="100%"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Living_Room.jpg/2560px-Living_Room.jpg"
+        :src=room.img_link
+        
     ></v-img>
 
     <v-card id="room-info">
         <v-card-title id="title">
-            Title Room_id: {{ $route.params.id }}
-
+            {{ room.title }}
             <v-spacer></v-spacer>
 
             <v-card-subtitle>
@@ -24,7 +24,7 @@
                     size="20"
                 ></v-rating>
                 <div class="grey--text ms-4">
-                    4.5 (100)
+                    {{ rating }} ({{ countOfRatings - 1}})
                 </div>    
             </v-card-subtitle>
         </v-card-title>
@@ -33,7 +33,7 @@
 
         <v-card-subtitle id="price-info" class="font-weight-black">
             <p style="color: black">
-                $ 56
+                $ {{ room.price }}
             </p>/night
         </v-card-subtitle>
  
@@ -45,18 +45,7 @@
             </div>
 
             <div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Integer porttitor sem eu ullamcorper elementum.
-                Nulla facilisi. Donec aliquam mauris felis.
-                In a consequat lorem. Praesent ultricies turpis ut sagittis malesuada.
-                Cras consequat mi quis nulla hendrerit aliquam.
-                Morbi dui elit, rutrum nec turpis a, porta finibus nisl.
-                Pellentesque rutrum, nisl sed tempor finibus, neque justo luctus nibh, sit amet semper arcu dui id orci.
-                Nunc ipsum velit, blandit non nulla vitae, sagittis facilisis quam.
-                Vestibulum finibus fringilla pharetra.
-                Nunc velit leo, pharetra non porttitor a, pellentesque volutpat est.
-                Fusce ac pharetra ligula, eget viverra mi. Aliquam mattis eu justo blandit dapibus.
-                Ut eu risus at est mattis imperdiet.
+                {{ room.extendedDescription }}
             </div>
         </v-card-text>
 
@@ -65,9 +54,9 @@
                 Facilities
             </div>
 
-            <v-card-subtitle>
-                <FacilitiesIcons />    
-            </v-card-subtitle>
+            <FacilitiesIcons
+                v-bind:facilities="facilities"
+            />    
         </v-card-text>
     </v-card>
     
@@ -76,6 +65,7 @@
 
 <script>
 import FacilitiesIcons from '../components/FacilitiesIcons.vue'
+import axios from '../axios'
 
 export default {
     name: 'RoomView',
@@ -84,7 +74,64 @@ export default {
     },
     data() {
         return {
-            rating: 4.5
+            room: {
+                img_link: '',
+                title: '',
+                sleeps: '',
+                floor: '',
+                price: '',
+                extendedDescription: '',
+            },
+            rating: 0,
+            countOfRatings: 0,
+            facilities: {
+                isWifi: null,
+                isParking: null,
+                animalAllow: null
+            }
+        }
+    },
+    created: async function() {
+        try {
+            // Get data about room of room_id == this.$route.params.id 
+            const roomData = await axios.get(`/rooms/${this.$route.params.id}`)
+            this.generateRoom(roomData?.data?.rows?.[0])
+
+            //  Get data about ratings of room_id == this.$route.params.id
+            const ratingsData = await axios.get(`/ratings/${this.$route.params.id}`)
+            this.generateRatings(ratingsData?.data?.rows)
+
+            //  Get data about facilities of room_id == this.$route.params.id
+            const facilitiesData = await axios.get(`/features/${this.$route.params.id}`)
+            this.generateFacilites(facilitiesData?.data?.rows?.[0])
+        } catch (err) {
+            console.log(err.message)
+        }
+    },
+    methods: {
+        generateRoom(roomData) {
+            // Check if data from backend exists and then asign it to variables
+            this.room.img_link = roomData?.img_link
+            this.room.title = roomData?.title
+            this.room.sleeps = roomData?.sleeps
+            this.room.floor = roomData?.floor
+            this.room.price = roomData?.price
+            this.room.extendedDescription = roomData?.extendedDescription
+        },
+        generateRatings(ratingsData) {
+            this.countOfRatings = ratingsData.length + 1
+
+            // Count rating
+            ratingsData.forEach(row => {
+                this.rating += row.rating
+            });
+            this.rating = (this.rating / this.countOfRatings)
+        },
+        generateFacilites(facilitiesData) {
+            // Check if data from backend exists and then asign it to variables
+            this.facilities.isWifi = facilitiesData?.is_wifi
+            this.facilities.isParking = facilitiesData?.is_parking
+            this.facilities.animalAllow = facilitiesData?.animal_allow
         }
     }
 }
