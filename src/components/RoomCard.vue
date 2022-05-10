@@ -69,6 +69,7 @@
 
 <script>
 export default {
+    name: 'RoomCard',
     props: ['room'],
     data: () => ({
         show: false,

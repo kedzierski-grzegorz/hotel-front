@@ -5,6 +5,7 @@
         elevation="2"
         icon
         color="brown"
+        :disabled="!facilities.isWifi"
     >
         <v-icon dark>
             mdi-wifi
@@ -16,6 +17,7 @@
         elevation="2"
         icon
         color="brown"
+        :disabled="!facilities.isParking"
     >
         <v-icon dark>
             mdi-parking
@@ -27,6 +29,7 @@
         elevation="2"
         icon
         color="brown"
+        :disabled="!facilities.animalAllow"
     >
         <v-icon>
             mdi-dog-side
@@ -37,7 +40,8 @@
 
 <script>
 export default {
-    name: 'FacilitiesIcons'
+    name: 'FacilitiesIcons',
+    props: ['facilities']
 }
 </script>
 
