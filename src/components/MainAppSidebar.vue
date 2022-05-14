@@ -25,12 +25,14 @@
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
+  <!-- This coude above seems to be unused? -->
+
   <v-app-bar app>
       <span class="hidden-sm-and-up">
         <v-app-bar-nav-icon @click="sidebar = !sidebar"></v-app-bar-nav-icon>
       </span>
     <v-toolbar-title>
-      <router-link to="/" tag="span" style="cursor: pointer">Hotel</router-link>
+      <router-link to="/" tag="span" style="cursor: pointer">Hotello</router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <div class="d-none d-sm-flex">
