@@ -12,9 +12,7 @@
       </v-container>
     </v-main>
 
-    <v-footer app>
-      <!-- -->
-    </v-footer>
+  <Footer />
   </v-app>
 </template>
 
@@ -24,10 +22,11 @@ import MainAppSidebar from "./components/MainAppSidebar.vue";
 import AdminAppSidebar from "./components/AdminAppSidebar.vue";
 import Loading from "./components/Loading.vue";
 import SnackabarInfo from "./components/SnackabarInfo.vue";
+import Footer from './components/Footer.vue'
 
 export default {
   name: 'App',
-  components: {SnackabarInfo, Loading, AdminAppSidebar, MainAppSidebar},
+  components: {SnackabarInfo, Loading, AdminAppSidebar, MainAppSidebar, Footer},
   data: () => ({
     isMainApp: true,
     isAdminApp: false
@@ -51,3 +50,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>
