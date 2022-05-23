@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import RoomsView from '../views/RoomsView.vue'
-import AdminView from "../views/admin/AdminView.vue";
-import AdminService from "../services/admin.service";
+import AdminView from "../views/admin/AdminView.vue"
+import AdminService from "../services/admin.service"
+import RoomView from '../views/RoomView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
         }
       ],
       redirect: '/admin/sign-in'
+    },
+    {
+      path: '/room/:id',
+      name: 'room',
+      component: RoomView
     }
   ]
 })

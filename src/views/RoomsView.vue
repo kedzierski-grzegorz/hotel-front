@@ -1,14 +1,14 @@
 <template>
     <v-container fluid>
-        <v-row v-bind:key="n" v-for="n in rooms.length"> <!-- In row we have max 3 column with 1 room card in each-->
-            <v-col 
-                v-bind:key="rooms[n-1][m-1]"
-                v-for="m in rooms[n-1].length"
+        <v-row>
+            <v-col
                 cols="12"
                 sm="4"
+                v-for="index in rooms.length"
+                v-bind:key="index"
             >
                 <RoomCard 
-                    v-bind:rooms="rooms[n-1][m-1]"
+                    v-bind:room="rooms[index-1]"
                 />
             </v-col>
         </v-row>
@@ -16,7 +16,8 @@
 </template>
 
 <script>
-import RoomCard from '../components/RoomCard.vue';
+import RoomCard from '../components/RoomCard.vue'
+import axios from '../axios'
 
 export default {
     name: 'RoomView',
@@ -24,54 +25,38 @@ export default {
         RoomCard,
     },
     data: () => ({
-        rooms: [
-            [{
-                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa_Oc-DoKyRc7pc3-32xQzefUjPycL3-w07g&usqp=CAU',
-                title: 'test title 1',
-                description: 'test description 1',
-                rating: 3,
-                countOfRatings: 10,
-                price: 120,
-                extendedDescription: 'test extended description 1'
-            },
-            {
-                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa_Oc-DoKyRc7pc3-32xQzefUjPycL3-w07g&usqp=CAU',
-                title: 'test title 2',
-                description: 'test description 2',
-                rating: 4,
-                countOfRatings: 100,
-                price: 40,
-                extendedDescription: 'test extended description 2'
-            },
-            {
-                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa_Oc-DoKyRc7pc3-32xQzefUjPycL3-w07g&usqp=CAU',
-                title: 'test title 3',
-                description: 'test description 3',
-                rating: 2,
-                countOfRatings: 1,
-                price: 200,
-                extendedDescription: 'test extended description 3'
-            }],
-            [{
-                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa_Oc-DoKyRc7pc3-32xQzefUjPycL3-w07g&usqp=CAU',
-                title: 'test title 4',
-                description: 'test description 4',
-                rating: 5,
-                countOfRatings: 30,
-                price: 80,
-                extendedDescription: 'test extended description 4'
-            },                        
-            {
-                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa_Oc-DoKyRc7pc3-32xQzefUjPycL3-w07g&usqp=CAU',
-                title: 'test title 5',
-                description: 'test description 5',
-                rating: 1,
-                countOfRatings: 20,
-                price: 50,
-                extendedDescription: 'test extended description 5'
-            }],
-            
-        ], // Here will be rooms info from backend but we need change db structure
+        rooms: [],
     }),
+    created: async function() {
+        try {
+            const rooms = await axios.get('/rooms')
+
+            // Add rooms to rooms table
+            await rooms?.data?.rows?.forEach(room => {
+                this.rooms.push(room)
+            })
+            
+            // Generate ratings
+            this.rooms.forEach(room => {
+                this.generateRatings(room)
+            })
+            // this.generateRatings(this.rooms)
+        } catch (err) {
+            console.log(err.message)
+        }
+    },
+    methods: {
+        async generateRatings(room) {
+            const ratings = await axios.get(`/ratings/${room.room_id}`)
+            room.countOfRatings = ratings?.data?.rows?.length + 1
+
+            // Count rating
+            let avgRatings = 0
+            ratings?.data?.rows?.forEach(row => {
+                avgRatings += row.rating
+            })
+            room.rating = (avgRatings / room.countOfRatings)
+        }, 
+    }
 };
 </script>
