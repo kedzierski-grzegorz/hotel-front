@@ -2,6 +2,7 @@
   <v-app>
     <Loading/>
     <SnackabarInfo/>
+    <ConfirmDlg/>
 
     <MainAppSidebar v-if="isMainApp" />
     <AdminAppSidebar v-if="isAdminApp" />
@@ -23,10 +24,11 @@ import AdminAppSidebar from "./components/AdminAppSidebar.vue";
 import Loading from "./components/Loading.vue";
 import SnackabarInfo from "./components/SnackabarInfo.vue";
 import Footer from './components/Footer.vue'
+import ConfirmDlg from "./components/ConfirmDialog.vue";
 
 export default {
   name: 'App',
-  components: {SnackabarInfo, Loading, AdminAppSidebar, MainAppSidebar, Footer},
+  components: {ConfirmDlg, SnackabarInfo, Loading, AdminAppSidebar, MainAppSidebar, Footer},
   data: () => ({
     isMainApp: true,
     isAdminApp: false

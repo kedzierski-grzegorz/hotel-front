@@ -31,7 +31,7 @@
         <v-app-bar-nav-icon @click="sidebar = !sidebar"></v-app-bar-nav-icon>
       </span>
     <v-toolbar-title>
-      <router-link to="/admin" tag="span" style="cursor: pointer">
+      <router-link to="/admin" tag="span" class="text-brown font-weight-bold" style="text-decoration: none; cursor: pointer">
         Admin panel
       </router-link>
     </v-toolbar-title>
