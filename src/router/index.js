@@ -4,6 +4,7 @@ import RoomsView from '../views/RoomsView.vue'
 import AdminView from "../views/admin/AdminView.vue"
 import AdminService from "../services/admin.service"
 import RoomView from '../views/RoomView.vue'
+import ReservationView from '../views/ReservationView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +51,11 @@ const router = createRouter({
       path: '/room/:id',
       name: 'room',
       component: RoomView
+    },
+    {
+      path: '/reservation/:id',
+      name: 'reservation',
+      component: ReservationView
     }
   ]
 })
