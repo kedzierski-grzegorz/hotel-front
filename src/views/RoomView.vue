@@ -125,7 +125,7 @@ export default {
             ratingsData.forEach(row => {
                 this.rating += row.rating
             });
-            this.rating = (this.rating / this.countOfRatings)
+            this.rating = (this.rating / this.countOfRatings).toFixed(1)
         },
         generateFacilites(facilitiesData) {
             // Check if data from backend exists and then asign it to variables

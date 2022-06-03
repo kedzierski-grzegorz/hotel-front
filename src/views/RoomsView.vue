@@ -55,7 +55,7 @@ export default {
             ratings?.data?.rows?.forEach(row => {
                 avgRatings += row.rating
             })
-            room.rating = (avgRatings / room.countOfRatings)
+            room.rating = (avgRatings / room.countOfRatings).toFixed(1)
         }, 
     }
 };
