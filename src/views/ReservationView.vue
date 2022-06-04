@@ -1,10 +1,18 @@
 <template>
-<h1>Reservation</h1>
+    <Datepicker v-model="date" range />
 </template>
 
 <script>
+import { ref } from 'vue'
+
 export default {
     name: 'ReservationView',
+    setup() {
+        const date = ref()
+        return {
+            date,
+        }
+    }
 }
 </script>
 
