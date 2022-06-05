@@ -7,34 +7,39 @@
         Reservation: Room-Name
     </v-card-title>
 
-    <v-row>
-      <v-col cols="12" sm="6">
-        <Datepicker
-          inputClassName="dp-custom-input"
-          v-model="date"
-          range
-          autoApply
-          format="dd/MM/yyyy"
-          placeholder="Select Date"
-          required
-        />
-      </v-col>
-
-      <v-col cols="12" sm="6">
-        <v-text-field
-          v-model="email"
-          :counter="64"
-          :rules="emailRules"
-          label="E-mail"
-          required
-        ></v-text-field>
-      </v-col>
-    </v-row>
     <v-form
         ref="form"
         v-model="valid"
         lazy-validation
+        @submit.prevent="submitForm"
     >
+
+      <v-row>
+        <v-col cols="12" sm="6">
+          <Datepicker
+            inputClassName="dp-custom-input"
+            v-model="date"
+            range
+            autoApply
+            format="dd/MM/yyyy"
+            placeholder="Select Date"
+            required
+            :state="isDateValid"
+            @blur="validateDate"
+          />
+        </v-col>
+
+        <v-col cols="12" sm="6">
+          <v-text-field
+            v-model="email"
+            :counter="64"
+            :rules="emailRules"
+            label="E-mail"
+            required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      
       <v-row>
         <v-col cols="12" sm="6">
           <v-text-field
@@ -149,7 +154,7 @@
       <v-btn
           class="mr-4 button"
           color="brown"
-          @click="validate"
+          @click="submitForm"
       >
           Validate
       </v-btn>
@@ -164,6 +169,7 @@ export default {
     name: 'ReservationView',
     data: () => ({
       valid: true,
+      isDateValid: null,
       firstName: '',
       firstNameRules: [
         v => !!v || 'First Name is required',
@@ -174,7 +180,7 @@ export default {
         v => !!v || 'Last Name is required',
         v => (v && v.length <= 120) || 'Last Name must be less than 120 characters',
       ],
-      documentNumberNumber: '',
+      documentNumber: '',
       documentNumberRules: [
         v => !!v || 'Document Number is required',
         v => (v && v.length == 11) || 'Document Number must be 9 digits',
@@ -206,7 +212,7 @@ export default {
         v => !!v || 'House Number is required',
         v => /^[0-9]+$/.test(v) || 'House Number must be number',
       ],
-      apartmentNumber: '',
+      apartmentNumber: 0,
       apartmentNumberRules: [
         v => /^[0-9]+$/.test(v) || 'Apartment Number must be number',
       ],
@@ -230,9 +236,63 @@ export default {
         }
     },
     methods: {
-      validate () {
-        this.$refs.form.validate()
+      validateDate() {
+        //  Check calender
+        if(this.date === undefined || this.date === null) {
+          this.isDateValid = false
+        } else {
+          this.isDateValid = null
+        }
       },
+      async validate () {
+        //  Check form
+        const result = await this.$refs.form.validate()
+
+        //  Check calender
+        if(this.date === undefined || this.date === null) {
+          this.isDateValid = false
+          return false
+        }
+
+        return result.valid
+      },
+      async submitForm() {
+        //  Reset calender style
+        this.isDateValid = null
+
+        //  If everything is good send data to backend
+        if(await this.validate()) {
+          console.log(
+            this.date?.[0].toLocaleDateString("pl-PL")
+            + ' ' +
+            this.date?.[1].toLocaleDateString("pl-PL")
+            + ' ' +
+            this.email
+            + ' ' +
+            this.firstName
+            + ' ' +
+            this.lastName
+            + ' ' +
+            this.documentNumber
+            + ' ' +
+            this.phoneNumber
+            + ' ' +
+            this.postalCode
+            + ' ' +
+            this.city
+            + ' ' +
+            this.street
+            + ' ' +
+            this.houseNumber
+            + ' ' +
+            this.apartmentNumber
+            + ' ' +
+            this.message
+            + ' ' +
+            this.checkbox
+          )
+        }
+      }
     },
 }
 </script>
