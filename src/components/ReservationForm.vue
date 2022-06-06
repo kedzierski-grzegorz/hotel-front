@@ -155,6 +155,7 @@
 
 <script>
 import { ref } from 'vue'
+import axios from '../axios'
 
 export default {
     name: 'ReservationForm',
@@ -253,35 +254,43 @@ export default {
 
         //  If everything is good send data to backend
         if(await this.validate()) {
-          console.log(
-            this.date?.[0].toLocaleDateString("pl-PL")
-            + ' ' +
-            this.date?.[1].toLocaleDateString("pl-PL")
-            + ' ' +
-            this.email
-            + ' ' +
-            this.firstName
-            + ' ' +
-            this.lastName
-            + ' ' +
-            this.documentNumber
-            + ' ' +
-            this.phoneNumber
-            + ' ' +
-            this.postalCode
-            + ' ' +
-            this.city
-            + ' ' +
-            this.street
-            + ' ' +
-            this.houseNumber
-            + ' ' +
-            this.apartmentNumber
-            + ' ' +
-            this.message
-            + ' ' +
-            this.checkbox
-          )
+            try {
+                //  Check if apartment number is given
+                let apartmentNumberFixed = null
+                this.apartmentNumber === 0 ? apartmentNumberFixed = null : apartmentNumberFixed = this.apartmentNumber
+
+                //  Try to add client
+                const client = await axios.post('/clients', {
+                    first_name: this.firstName,
+                    last_name: this.lastName,
+                    document_number: this.documentNumber,
+                    phone_number: this.phoneNumber,
+                    email: this.email,
+                    postal_code: this.postalCode,
+                    city: this.city,
+                    street: this.street,
+                    house_number: this.houseNumber,
+                    apartment_number: apartmentNumberFixed
+                })
+
+                //  Try to add reservation
+                const roomId = this.$route.params.id
+                const clientId = client?.data?.rows?.[0]?.client_id
+                const startDate = this.date?.[0]?.toLocaleDateString("pl-PL")
+                const endDate = this.date?.[1]?.toLocaleDateString("pl-PL")
+
+                await axios.post('/reservations', {
+                    room_id: roomId,
+                    client_id: clientId,
+                    start_date: startDate,
+                    end_date: endDate,
+                    message: this.message
+                })
+
+                alert('sucess')
+            } catch (err) {
+                alert(err.message)
+            }
         }
       }
     },
