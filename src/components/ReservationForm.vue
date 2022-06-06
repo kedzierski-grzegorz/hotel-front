@@ -188,6 +188,7 @@ export default {
       postalCodeRules: [
         v => !!v || 'Postal Code is required',
         v => (v && v.length == 6) || 'Postal Code must be 5 digits and \'-\' character',
+        v => /^[0-9]{2}[-][0-9]{3}$/.test(v) || 'Postal code must have patern: XX-XXX',
       ],
       city: '',
       cityRules: [
@@ -234,6 +235,11 @@ export default {
           this.isDateValid = false
         } else {
           this.isDateValid = null
+
+          //  Check if start date is valid
+          if(!(new Date() < this.date[0])) {
+              this.isDateValid = false
+          }
         }
       },
       async validate () {
