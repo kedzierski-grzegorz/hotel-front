@@ -18,6 +18,8 @@
         required
         :state="isDateValid"
         @blur="validateDate"
+        :disabledDates="disabledDates"
+        :enableTimePicker="false"
         />
     </v-col>
 
@@ -154,11 +156,14 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import axios from '../axios'
 
 export default {
     name: 'ReservationForm',
+    props: {
+        disabledDates: Array,
+    },
     data: () => ({
       valid: true,
       isDateValid: null,
@@ -221,10 +226,16 @@ export default {
       ],
       checkbox: false,
     }),
-    setup() {
+    setup(props) {
         const date = ref()
-
+      
+        //  Disabled date for specific room
+        const disabledDates = computed( () => {
+            return props.disabledDates
+        })
+        
         return {
+            disabledDates,
             date,
         }
     },

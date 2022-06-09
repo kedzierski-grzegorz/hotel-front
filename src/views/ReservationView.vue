@@ -7,7 +7,7 @@
         Reservation: {{ roomTitle }}
     </v-card-title>
 
-    <ReservationForm />
+    <ReservationForm :disabledDates = dates />
 </v-card>
 </template>
 
@@ -22,7 +22,9 @@ export default {
     },
     data() {
       return {
-        roomTitle: ''
+        roomTitle: '',
+        reservations: [],
+        dates: [],
       }
     },
     created: async function() {
@@ -33,6 +35,34 @@ export default {
       } catch (err) {
         console.log(err.message)
         this.roomTitle = 'Ops something went wrong'
+      }
+
+      //  Try to get room's reservations and generate disabled dates
+      try {
+        const reservationsResult = await axios.get(`/reservations/room/${this.$route.params.id}`)
+        this.reservations = reservationsResult?.data?.rows
+        this.generateDisabledDates()
+      } catch (err) {
+        console.log(err.message)
+      }
+    },
+    methods: {
+      generateDisabledDates() {
+        try {
+          //  Run this loop for each reservations of room
+          this.reservations.forEach(row => {
+            const start_date = new Date(row?.start_date)
+            const end_date = new Date(row?.end_date)
+  
+            //  Generate array of disabled dates
+            while (start_date <= end_date) {
+                this.dates.push(new Date(start_date))
+                start_date.setDate(start_date.getDate() + 1)
+            }
+          })
+        } catch (err) {
+          console.log(err.message)
+        }
       }
     }
 }
