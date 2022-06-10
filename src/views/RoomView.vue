@@ -12,7 +12,6 @@
     <v-card id="room-info">
         <v-card-title id="title">
             {{ room.title }}
-            <v-spacer></v-spacer>
 
             <v-card-subtitle>
                 <v-rating
@@ -27,6 +26,11 @@
                     {{ rating }} ({{ countOfRatings - 1}})
                 </div>    
             </v-card-subtitle>
+
+            <v-spacer></v-spacer>
+            <router-link :to="`/reservation/${this.$route.params.id}`" style="text-decoration: none; color: inherit;">
+                <v-btn class="button" color="brown">Book now</v-btn>
+            </router-link>
         </v-card-title>
 
         <v-divider></v-divider>
@@ -151,5 +155,9 @@ export default {
 #price-info {
     padding-top: 0.8em;
     padding-bottom: 0.8em;
+}
+
+.button {
+    opacity: 0.9;
 }
 </style>
