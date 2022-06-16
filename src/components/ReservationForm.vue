@@ -148,10 +148,21 @@
     <v-btn
         class="mr-4 button"
         color="brown"
+        :disabled="disabled"
         @click="submitForm"
     >
         Validate
     </v-btn>
+
+    <v-alert v-model="success" type="success" class="message">
+      Congratulation! <br/>
+      Your reservation was successful
+    </v-alert>
+
+    <v-alert v-model="error" type="error" class="message">
+      Error! <br/>
+      Sorry something went wrong. Please try again later. 
+    </v-alert>
 </v-form>
 </template>
 
@@ -165,6 +176,9 @@ export default {
         disabledDates: Array,
     },
     data: () => ({
+      disabled: false,
+      success: false,
+      error: false,
       valid: true,
       isDateValid: null,
       firstName: '',
@@ -180,7 +194,7 @@ export default {
       documentNumber: '',
       documentNumberRules: [
         v => !!v || 'Document Number is required',
-        v => (v && v.length == 11) || 'Document Number must be 9 digits',
+        v => (v && v.length == 11) || 'Document Number must be 11 digits',
         v => /^[0-9]+$/.test(v) || 'Document Number must be only digits',
       ],
       phoneNumber: '',
@@ -296,7 +310,7 @@ export default {
                 const startDate = this.date?.[0]?.toLocaleDateString("pl-PL")
                 const endDate = this.date?.[1]?.toLocaleDateString("pl-PL")
 
-                await axios.post('/reservations', {
+                const reservation = await axios.post('/reservations', {
                     room_id: roomId,
                     client_id: clientId,
                     start_date: startDate,
@@ -304,9 +318,17 @@ export default {
                     message: this.message
                 })
 
-                alert('sucess')
+                //  Booleans for messages and disabling submit button
+                this.disabled = true
+                this.error = false
+                this.success = true
+
+                //  Redirect to sum up of reservation after delay
+                setTimeout( () => this.$router.push({ path: '/rooms'}), 5000);
             } catch (err) {
-                alert(err.message)
+              this.success = false
+              this.error = true
+              console.log(err.message)
             }
         }
       }
@@ -317,6 +339,12 @@ export default {
 <style scoped>
 .button {
     opacity: 0.9;
+    margin-bottom: 2em;
+}
+
+.message {
+  width: 50%;
+  margin: auto;
 }
 </style>
 
