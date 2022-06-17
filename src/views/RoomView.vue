@@ -120,7 +120,7 @@ export default {
             this.room.sleeps = roomData?.sleeps
             this.room.floor = roomData?.floor
             this.room.price = roomData?.price
-            this.room.extendedDescription = roomData?.extendedDescription
+            this.room.extendedDescription = roomData?.extended_description
         },
         generateRatings(ratingsData) {
             this.countOfRatings = ratingsData.length + 1
