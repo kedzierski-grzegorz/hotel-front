@@ -4,6 +4,7 @@
       hide-overlay
       persistent
       width="300"
+      style="z-index: 99999"
   >
     <v-card
         color="primary"
