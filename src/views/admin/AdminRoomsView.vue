@@ -17,7 +17,7 @@
         class="elevation-1">
       <thead>
       <tr>
-        <th class="text-left">
+        <th class="text-left" style="z-index: 10">
           Action
         </th>
         <th class="text-left">
