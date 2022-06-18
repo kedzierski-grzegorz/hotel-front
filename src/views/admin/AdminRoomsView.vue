@@ -3,6 +3,7 @@
     <v-row class="mb-2">
       <v-col sm="11">
         <h3>Rooms</h3>
+        reserved: {{rooms.filter(r => r.reserved > 0).length}} / {{rooms.length}}
       </v-col>
       <v-col sm="1">
         <v-btn class="bg-brown" @click="$refs.roomEdit.open(0)">
@@ -19,6 +20,9 @@
       <tr>
         <th class="text-left" style="z-index: 10">
           Action
+        </th>
+        <th class="text-left">
+          Is currently reserved
         </th>
         <th class="text-left">
           Title
@@ -54,6 +58,9 @@
                    icon>
               <v-icon>mdi-delete</v-icon>
             </v-btn>
+          </td>
+          <td>
+            <input type="checkbox" :checked="room.reserved > 0" disabled/>
           </td>
           <td>{{ room.title }}</td>
           <td>{{ room.price }}</td>
