@@ -91,7 +91,14 @@ export default {
             facilities: {
                 isWifi: null,
                 isParking: null,
-                animalAllow: null
+                animalAllow: null,
+                isBreakfast: null,
+                isRoomService: null,
+                isLounge: null,
+                isPool: null,
+                isSpa: null,
+                isGarden: null,
+                isGym: null,
             }
         }
     },
@@ -136,6 +143,13 @@ export default {
             this.facilities.isWifi = facilitiesData?.is_wifi
             this.facilities.isParking = facilitiesData?.is_parking
             this.facilities.animalAllow = facilitiesData?.animal_allow
+            this.facilities.isBreakfast = facilitiesData?.is_breakfast
+            this.facilities.isRoomService = facilitiesData?.is_room_service
+            this.facilities.isLounge = facilitiesData?.is_lounge
+            this.facilities.isPool = facilitiesData?.is_pool
+            this.facilities.isSpa = facilitiesData?.is_spa
+            this.facilities.isGarden = facilitiesData?.is_garden
+            this.facilities.isGym = facilitiesData?.is_gym
         }
     }
 }
