@@ -66,12 +66,12 @@
         <v-col cols="12" sm="4">
             <v-btn class="button" color="brown">
                 <v-icon class="icon" left> mdi-download </v-icon>
-                Download Transaction Confiramtion
+                Download Transaction Confirmation
             </v-btn>
         </v-col>
 
         <v-col class="columnBottom" cols="12" sm="2" offset-sm="6">
-            <v-btn class="button" color="brown">
+            <v-btn class="button" color="brown" :disabled = isPaid>
                 <v-icon class="icon" left> mdi-cash </v-icon>
                 Pay Now
             </v-btn>
@@ -82,19 +82,66 @@
 </template>
 
 <script>
+import axios from '../axios'
+
 export default {
     name: 'BookingSummaryView',
     data: () => ({
-        reservationId: 0,
-        firstName: 'John',
-        lastName: 'Smith',
-        email: 'example@example.com',
-        phone: '837459374',
-        startDate: '12/07/2022',
-        endDate: '20/07/2022',
-        pricePerNight: '20$',
-        finalPrice: '160$'
-    })
+        isPaid: false,
+        reservationId: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        startDate: '',
+        endDate: '',
+        pricePerNight: '',
+        finalPrice: ''
+    }),
+    created: async function() {
+        //  Get reservation data
+        try {
+            const result = await axios.get(`/reservations/${this.$route.params.id}/client`)
+
+            //  Assign reservation data
+            this.reservationId = result?.data?.rows?.[0]?.reservation_id 
+            this.firstName = result?.data?.rows?.[0]?.first_name
+            this.lastName = result?.data?.rows?.[0]?.last_name
+            this.email = result?.data?.rows?.[0]?.email
+            this.phone = result?.data?.rows?.[0]?.phone_number
+            this.startDate = new Date( result?.data?.rows?.[0]?.start_date ).toLocaleDateString("pl-PL")
+            this.endDate = new Date ( result?.data?.rows?.[0]?.end_date ).toLocaleDateString("pl-PL")
+            this.pricePerNight = result?.data?.rows?.[0]?.price
+            this.isPaid = result?.data?.rows?.[0]?.paid
+
+            //  Generate final price
+            this.generateFinalPrice(result?.data?.rows?.[0]?.start_date, result?.data?.rows?.[0]?.end_date)
+        } catch (err) {
+            console.log(err.message)
+            this.reservationId = 'error!'
+            this.firstName = 'error!'
+            this.lastName = 'error!'
+            this.email = 'error!'
+            this.phone = 'error!'
+            this.startDate = 'error!'
+            this.endDate = 'error!'
+            this.pricePerNight = 'error!'
+            this.finalPrice = 'error!'
+        }
+    },
+    methods: {
+        generateFinalPrice(start_date, end_date) {
+            //  Convert string to date
+            const startDate= new Date(start_date)
+            const endDate = new Date(end_date)
+
+            //  Calculate difference between dates
+            const differenceBetweenDates = (endDate.getTime() - startDate.getTime()) / 86400000
+            
+            //  Calculate final price
+            this.finalPrice = differenceBetweenDates * this.pricePerNight
+        }
+    }
 }
 </script>
 
@@ -127,7 +174,6 @@ export default {
 .labelText {
     position: absolute;
     top: 1.4em;
-    z-index: 11111;
     font-weight: bold;
 }
 
