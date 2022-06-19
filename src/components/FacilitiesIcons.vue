@@ -1,6 +1,7 @@
 <template>
 <div>
     <v-btn
+        title="WiFi Available"
         class="facilities"
         elevation="2"
         icon
@@ -13,6 +14,7 @@
     </v-btn>
 
     <v-btn
+        title="Parking Space"
         class="facilities"
         elevation="2"
         icon
@@ -25,6 +27,7 @@
     </v-btn>
     
     <v-btn
+        title="Pet Friendly"
         class="facilities"
         elevation="2"
         icon
@@ -37,6 +40,7 @@
     </v-btn>
 
     <v-btn
+        title="Breakfast Included"
         class="facilities"
         elevation="2"
         icon
@@ -49,6 +53,7 @@
     </v-btn>
 
     <v-btn
+        title="Room Service"
         class="facilities"
         elevation="2"
         icon
@@ -61,6 +66,7 @@
     </v-btn>
 
     <v-btn
+        title="24 Hour Lounge"
         class="facilities"
         elevation="2"
         icon
@@ -73,6 +79,7 @@
     </v-btn>
 
     <v-btn
+        title="Hotel Swimming Pool"
         class="facilities"
         elevation="2"
         icon
@@ -85,6 +92,7 @@
     </v-btn>
 
     <v-btn
+        title="Hotel SPA"
         class="facilities"
         elevation="2"
         icon
@@ -97,6 +105,7 @@
     </v-btn>
 
     <v-btn
+        title="Hotel Park"
         class="facilities"
         elevation="2"
         icon
@@ -109,6 +118,7 @@
     </v-btn>
 
     <v-btn
+        title="Hotel Gym"
         class="facilities"
         elevation="2"
         icon
