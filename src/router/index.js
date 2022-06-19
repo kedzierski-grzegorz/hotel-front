@@ -5,6 +5,7 @@ import AdminView from "../views/admin/AdminView.vue"
 import AdminService from "../services/admin.service"
 import RoomView from '../views/RoomView.vue'
 import ReservationView from '../views/ReservationView.vue'
+import BookingSummaryView from '../views/BookingSummaryView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +57,11 @@ const router = createRouter({
       path: '/reservation/:id',
       name: 'reservation',
       component: ReservationView
+    },
+    {
+      path: '/reservation/:id/summary',
+      name: 'summary',
+      component: BookingSummaryView
     }
   ]
 })
