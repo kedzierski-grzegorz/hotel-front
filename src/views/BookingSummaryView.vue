@@ -71,7 +71,11 @@
         </v-col>
 
         <v-col class="columnBottom" cols="12" sm="2" offset-sm="6">
-            <v-btn class="button" color="brown" :disabled = isPaid>
+            <v-btn
+                    @click="goToPayment()"
+                    class="button"
+                    color="brown"
+                    :disabled = isPaid>
                 <v-icon class="icon" left> mdi-cash </v-icon>
                 Pay Now
             </v-btn>
@@ -88,6 +92,7 @@ export default {
     name: 'BookingSummaryView',
     data: () => ({
         isPaid: false,
+        roomId : '',
         reservationId: '',
         firstName: '',
         lastName: '',
@@ -104,6 +109,8 @@ export default {
             const result = await axios.get(`/reservations/${this.$route.params.id}/client`)
 
             //  Assign reservation data
+            this.roomId = result?.data?.rows?.[0]?.room_id
+
             this.reservationId = result?.data?.rows?.[0]?.reservation_id 
             this.firstName = result?.data?.rows?.[0]?.first_name
             this.lastName = result?.data?.rows?.[0]?.last_name
@@ -140,6 +147,13 @@ export default {
             
             //  Calculate final price
             this.finalPrice = differenceBetweenDates * this.pricePerNight
+        },
+        async goToPayment() {
+            //  Generate link for payment
+            const url = `http://localhost:5000/checkout-session/1/${this.roomId}/${this.reservationId}`
+
+            //  Redirect for payment
+            window.location.href = url
         }
     }
 }
