@@ -5,6 +5,7 @@ import AdminView from "../views/admin/AdminView.vue"
 import AdminService from "../services/admin.service"
 import RoomView from '../views/RoomView.vue'
 import ReservationView from '../views/ReservationView.vue'
+import BookingSummaryView from '../views/BookingSummaryView.vue'
 import SuccessPaymentView from "../views/SuccessPaymentView.vue";
 import CancelPaymentView from "../views/CancelPaymentView.vue";
 
@@ -60,6 +61,10 @@ const router = createRouter({
       component: ReservationView
     },
     {
+      path: '/reservation/:id/summary',
+      name: 'summary',
+      component: BookingSummaryView
+    },
       path: '/checkout_success',
       name: 'checkout_success',
       component: SuccessPaymentView

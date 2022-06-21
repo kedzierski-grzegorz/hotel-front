@@ -318,13 +318,14 @@ export default {
                     message: this.message
                 })
 
+
                 //  Booleans for messages and disabling submit button
                 this.disabled = true
                 this.error = false
                 this.success = true
 
                 //  Redirect to sum up of reservation after delay
-                setTimeout( () => this.$router.push({ path: '/rooms'}), 5000);
+                setTimeout( () => this.$router.push({ path: `/reservation/${reservation.data.rows[0].reservation_id}/summary`}), 5000);
             } catch (err) {
               this.success = false
               this.error = true
