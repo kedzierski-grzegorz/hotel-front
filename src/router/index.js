@@ -65,6 +65,7 @@ const router = createRouter({
       name: 'summary',
       component: BookingSummaryView
     },
+    {
       path: '/checkout_success',
       name: 'checkout_success',
       component: SuccessPaymentView
