@@ -6,6 +6,8 @@ import AdminService from "../services/admin.service"
 import RoomView from '../views/RoomView.vue'
 import ReservationView from '../views/ReservationView.vue'
 import BookingSummaryView from '../views/BookingSummaryView.vue'
+import SuccessPaymentView from "../views/SuccessPaymentView.vue";
+import CancelPaymentView from "../views/CancelPaymentView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,7 +64,16 @@ const router = createRouter({
       path: '/reservation/:id/summary',
       name: 'summary',
       component: BookingSummaryView
-    }
+    },
+      path: '/checkout_success',
+      name: 'checkout_success',
+      component: SuccessPaymentView
+    },
+    {
+      path: '/checkout_cancel',
+      name: 'checkout_cancel',
+      component: CancelPaymentView
+    },
   ]
 })
 

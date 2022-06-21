@@ -29,13 +29,14 @@ const AdminService = {
     },
 
     async addRoom(room) {
-        await api.post('rooms/', {
+        return (await api.post('rooms/', {
             title: room.title,
             description: room.description,
             floor: room.floor,
             price: room.price,
-            sleeps: room.sleeps
-        });
+            sleeps: room.sleeps,
+            img_link: room.img_link
+        })).data?.id ?? 0;
     },
 
     async updateRoom(room) {
@@ -44,12 +45,24 @@ const AdminService = {
             description: room.description,
             floor: room.floor,
             price: room.price,
-            sleeps: room.sleeps
+            sleeps: room.sleeps,
+            img_link: room.img_link
         });
     },
 
     async deleteRoom(roomId) {
         await api.delete('rooms/' + roomId);
+    },
+
+    async getRoomFacilities(roomId) {
+        return (await api.get('features/' + roomId)).data?.rows[0] ?? {};
+    },
+
+    async setRoomFacility(roomId, type, status) {
+        await api.patch('features/' + roomId, {
+            type: type,
+            status: status
+        });
     }
 };
 
