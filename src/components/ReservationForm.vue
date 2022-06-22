@@ -139,6 +139,7 @@
     ></v-textarea>
 
     <v-checkbox
+        v-if="!reservationId"
         v-model="checkbox"
         :rules="[v => !!v || 'You must agree to continue!']"
         label="I agree with term & conditions"
@@ -151,7 +152,7 @@
         :disabled="disabled"
         @click="submitForm"
     >
-        Validate
+        {{reservationId ? 'Update' : 'Book'}}
     </v-btn>
 
     <v-alert v-model="success" type="success" class="message">
@@ -176,6 +177,8 @@ export default {
         disabledDates: Array,
     },
     data: () => ({
+      reservationId: 0,
+      clientId: 0,
       disabled: false,
       success: false,
       error: false,
@@ -254,6 +257,26 @@ export default {
         }
     },
     methods: {
+      setData(reservation) {
+        console.log(reservation)
+        this.reservationId = reservation.reservation_id;
+        this.clientId = reservation.client_id;
+        this.checkbox = true;
+        this.date = [new Date(reservation.start_date), new Date(reservation.end_date)];
+        this.firstName = reservation.first_name;
+        this.lastName = reservation.last_name;
+        this.email = reservation.email;
+        this.documentNumber = reservation.document_number;
+        this.phoneNumber = reservation.phone_number;
+        this.postalCode = reservation.postal_code;
+        this.city = reservation.city;
+        this.street = reservation.street;
+        this.houseNumber = reservation.house_number;
+        this.apartmentNumber = reservation.apartment_number;
+        this.message = reservation.message;
+        // this.
+      },
+
       validateDate() {
         //  Check calender
         if(this.date === undefined || this.date === null) {
@@ -289,9 +312,12 @@ export default {
                 //  Check if apartment number is given
                 let apartmentNumberFixed = null
                 this.apartmentNumber === 0 ? apartmentNumberFixed = null : apartmentNumberFixed = this.apartmentNumber
+                const startDate = this.date?.[0]?.toLocaleDateString("pl-PL")
+                const endDate = this.date?.[1]?.toLocaleDateString("pl-PL")
 
                 //  Try to add client
-                const client = await axios.post('/clients', {
+                if (this.clientId > 0) {
+                  await axios.put('/clients/' + this.clientId, {
                     first_name: this.firstName,
                     last_name: this.lastName,
                     document_number: this.documentNumber,
@@ -302,30 +328,55 @@ export default {
                     street: this.street,
                     house_number: this.houseNumber,
                     apartment_number: apartmentNumberFixed
-                })
+                  });
 
-                //  Try to add reservation
-                const roomId = this.$route.params.id
-                const clientId = client?.data?.rows?.[0]?.client_id
-                const startDate = this.date?.[0]?.toLocaleDateString("pl-PL")
-                const endDate = this.date?.[1]?.toLocaleDateString("pl-PL")
+                  await axios.put('/reservations/' + this.reservationId, {
+                    client_id: this.clientId,
+                    start_date: startDate,
+                    end_date: endDate,
+                    message: this.message
+                  })
 
-                const reservation = await axios.post('/reservations', {
+                  this.disabled = true
+                  this.error = false
+                  this.success = true
+
+                  setTimeout(() => this.$emit("updated"), 2000);
+                } else {
+                  const client = await axios.post('/clients', {
+                    first_name: this.firstName,
+                    last_name: this.lastName,
+                    document_number: this.documentNumber,
+                    phone_number: this.phoneNumber,
+                    email: this.email,
+                    postal_code: this.postalCode,
+                    city: this.city,
+                    street: this.street,
+                    house_number: this.houseNumber,
+                    apartment_number: apartmentNumberFixed
+                  })
+
+                  //  Try to add reservation
+                  const roomId = this.$route.params.id
+                  const clientId = client?.data?.rows?.[0]?.client_id
+
+                  const reservation = await axios.post('/reservations', {
                     room_id: roomId,
                     client_id: clientId,
                     start_date: startDate,
                     end_date: endDate,
                     message: this.message
-                })
+                  })
 
 
-                //  Booleans for messages and disabling submit button
-                this.disabled = true
-                this.error = false
-                this.success = true
+                  //  Booleans for messages and disabling submit button
+                  this.disabled = true
+                  this.error = false
+                  this.success = true
 
-                //  Redirect to sum up of reservation after delay
-                setTimeout( () => this.$router.push({ path: `/reservation/${reservation.data.rows[0].reservation_id}/summary`}), 5000);
+                  //  Redirect to sum up of reservation after delay
+                  setTimeout( () => this.$router.push({ path: `/reservation/${reservation.data.rows[0].reservation_id}/summary`}), 3000);
+                }
             } catch (err) {
               this.success = false
               this.error = true

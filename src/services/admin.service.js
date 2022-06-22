@@ -63,7 +63,15 @@ const AdminService = {
             type: type,
             status: status
         });
-    }
+    },
+
+    async getReservationById(reservationId) {
+        return (await api.get('reservations/' + reservationId)).data?.rows[0] ?? null;
+    },
+
+    async deleteReservation(reservationId) {
+        await api.delete('reservations/' + reservationId);
+    },
 };
 
 export default AdminService;
