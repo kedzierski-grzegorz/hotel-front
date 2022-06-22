@@ -64,7 +64,11 @@
     
     <v-row>
         <v-col cols="12" sm="4">
-            <v-btn class="button" color="brown">
+            <v-btn
+                @click="downloadInvoice()"
+                class="button"
+                color="brown"
+            >
                 <v-icon class="icon" left> mdi-download </v-icon>
                 Download Transaction Confirmation
             </v-btn>
@@ -72,10 +76,11 @@
 
         <v-col class="columnBottom" cols="12" sm="2" offset-sm="6">
             <v-btn
-                    @click="goToPayment()"
-                    class="button"
-                    color="brown"
-                    :disabled = isPaid>
+                @click="goToPayment()"
+                class="button"
+                color="brown"
+                :disabled = isPaid
+            >
                 <v-icon class="icon" left> mdi-cash </v-icon>
                 Pay Now
             </v-btn>
@@ -153,6 +158,13 @@ export default {
             const url = `http://localhost:5000/checkout-session/1/${this.roomId}/${this.reservationId}`
 
             //  Redirect for payment
+            window.location.href = url
+        },
+        async downloadInvoice() {
+            //  Generate link for invoice
+            const url = `http://localhost:5000/reservations/${this.reservationId}/invoice`
+            
+            //  Redirect for invoice download
             window.location.href = url
         }
     }
