@@ -5,7 +5,7 @@
                 <v-col style="text-align: center;">                    
                     <v-btn
                         color="brown"
-                        @click="showStandards = !showStandards"
+                        @click="show = !show"
                         style="opacity: 0.9;"
                     >
                         STANDARD
@@ -14,13 +14,14 @@
                     <v-container
                         class="px-0"
                         fluid
-                        v-show="showStandards"
+                        v-show="show"
                     >
                         <v-checkbox
                             v-model="economic"
                             label="ECONOMIC"
                             color="brown"
                             hide-details
+                            @click="checkBox1()"
                         ></v-checkbox>
 
                         <v-checkbox
@@ -28,6 +29,7 @@
                             label="STANDARD"
                             color="brown"
                             hide-details
+                            @click="checkBox2()"
                         ></v-checkbox>
 
                         <v-checkbox
@@ -35,6 +37,7 @@
                             label="PREMIUM"
                             color="brown"
                             hide-details
+                            @click="checkBox3()"
                         ></v-checkbox>
                     </v-container>
                 </v-col>
@@ -44,7 +47,7 @@
                 <v-col style="text-align: center;">
                     <v-btn
                         color="brown"
-                        @click="showPrice = !showPrice"
+                        @click="show = !show"
                         style="opacity: 0.9;"
                     >                    
                         PRICE
@@ -53,7 +56,7 @@
                     <v-container
                         class="px-0"
                         fluid
-                        v-show="showPrice"
+                        v-show="show"
                     >
                         <v-row>
                             <v-col cols="12" sm="6">
@@ -78,7 +81,7 @@
                 <v-col style="text-align: center;">
                     <v-btn
                         color="brown"
-                        @click="showSleeps = !showSleeps"
+                        @click="show = !show"
                         style="opacity: 0.9;"
                     >
                         SLEEPS
@@ -87,7 +90,7 @@
                     <v-container
                         class="px-0"
                         fluid
-                        v-show="showSleeps"
+                        v-show="show"
                     >
                         <v-select
                             v-model="select"
@@ -102,7 +105,7 @@
                 <v-col style="text-align: center;">
                      <v-btn
                         color="brown"
-                        @click="showDate = !showDate"
+                        @click="show = !show"
                         style="opacity: 0.9;"
                     >   
                         DATE
@@ -111,7 +114,7 @@
                      <v-container
                         class="px-0"
                         fluid
-                        v-show="showDate"
+                        v-show="show"
                     >
                         <Datepicker
                             inputClassName="dp-custom-input"
@@ -122,12 +125,21 @@
                             placeholder="Select Date"
                             required
                             :enableTimePicker="false"
-                            />
+                        />
+
+                        <v-btn
+                            color="brown"
+                            style="opacity: 0.9;margin-top: 5em;"
+                            @click="filterRooms()"
+                        >                    
+                            SHOW
+                        </v-btn>
+
                      </v-container>
                 </v-col>
-
                 <!-- DATE -->
             </v-row>
+            
         </v-card>
 
         <v-row>
@@ -156,43 +168,50 @@ export default {
     },
     data: () => ({
         rooms: [],
-        showStandards: false,
+        show: false,
         economic: false,
         standard: true,
         premium: false,
-        showPrice: false,
         minPrice: 1,
         maxPrice: 1000,
-        showSleeps: false,
         select: 2,
         items: [],
-        showDate: false,
-        date: '',
+        date: [],
+        disabledDates: [],
     }),
     created: async function() {
         try {
-            const rooms = await axios.get('/rooms')
-
-            // Add rooms to rooms table
-            await rooms?.data?.rows?.forEach(room => {
-                this.rooms.push(room)
-            })
-            
-            // Generate ratings
-            this.rooms.forEach(room => {
-                this.generateRatings(room)
-            })
-
-            //  Generate number of sleeps
-            for(let i = 1; i <= 10; i++) {
-                this.items[i] = i
-            }
-
+            await this.getRooms()
         } catch (err) {
             console.log(err.message)
         }
     },
     methods: {
+        async getRooms() {
+            try {
+                const rooms = await axios.get('/rooms')
+
+                //  Clear rooms array
+                this.rooms = []
+
+                // Add rooms to rooms table
+                await rooms?.data?.rows?.forEach(room => {
+                    this.rooms.push(room)
+                })
+                
+                // Generate ratings
+                this.rooms.forEach(room => {
+                    this.generateRatings(room)
+                })
+
+                //  Generate number of sleeps
+                for(let i = 1; i <= 10; i++) {
+                    this.items[i] = i
+                }
+            } catch (err) {
+                console.log(err.message)
+            }
+        },
         async generateRatings(room) {
             const ratings = await axios.get(`/ratings/${room.room_id}`)
             room.countOfRatings = ratings?.data?.rows?.length + 1
@@ -202,8 +221,42 @@ export default {
             ratings?.data?.rows?.forEach(row => {
                 avgRatings += row.rating
             })
-            room.rating = (avgRatings / room.countOfRatings).toFixed(1)
-        }, 
+            room.rating = Number.parseFloat((avgRatings / room.countOfRatings).toFixed(1))
+        },
+        async filterRooms() {
+            try {
+                //  Get all rooms from db
+                await this.getRooms()
+
+                //  Filter rooms
+                const newRooms = (this.rooms.filter( async (room) => {
+                    return ( 
+                        this.economic ? room.room_standard == "ECONOMIC" : true
+                        && this.standard ? room.room_standard == "STANDARD": true
+                        && this.premium ? room.room_standard == "PREMIUM" : true
+                        && !isNaN(this.minPrice) ? room.price > this.minPrice : true
+                        && !isNaN(this.maxPrice) ? room.price > this.maxPrice : true
+                        && room.sleeps >= this.select
+                    )
+                }))
+
+                this.rooms = newRooms
+            } catch (err) {
+                console.log(err.message)
+            }
+        },
+        checkBox1() {
+            this.standard = false
+            this.premium = false
+        },
+        checkBox2() {
+            this.economic = false
+            this.premium = false
+        },
+        checkBox3() {
+            this.economic = false
+            this.standard = false
+        },
     }
 };
 </script>
