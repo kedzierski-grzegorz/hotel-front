@@ -36,11 +36,24 @@
         <v-divider></v-divider>
 
         <v-card-subtitle id="price-info" class="font-weight-black">
-            <p style="color: black">
+            <p id="standard">
+                ROOM: {{ room.room_standard }}
+            </p>
+
+            <v-spacer></v-spacer>
+
+            <p id="sleeps" style="font-size: 1.2em;">
+                {{ room.sleeps }}
+                <v-icon>
+                    mdi-bed-king-outline
+                </v-icon>
+            </p>
+
+            <p style="color: black; font-size: 1.2em;">
                 $ {{ room.price }}
-            </p>/night
+            </p>/night         
         </v-card-subtitle>
- 
+
         <v-divider></v-divider>
         
         <v-card-text>
@@ -81,6 +94,7 @@ export default {
             room: {
                 img_link: '',
                 title: '',
+                room_standard: 'STANDARD',
                 sleeps: '',
                 floor: '',
                 price: '',
@@ -124,6 +138,7 @@ export default {
             // Check if data from backend exists and then asign it to variables
             this.room.img_link = roomData?.img_link
             this.room.title = roomData?.title
+            this.room.room_standard = roomData?.room_standard
             this.room.sleeps = roomData?.sleeps
             this.room.floor = roomData?.floor
             this.room.price = roomData?.price
@@ -164,6 +179,9 @@ export default {
 #room-info {
     margin-top: -0.5em;
     
+}
+#sleeps {
+    margin-right: 2em;
 }
 
 #price-info {
