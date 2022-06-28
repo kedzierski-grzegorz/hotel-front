@@ -28,6 +28,9 @@
           Title
         </th>
         <th class="text-left">
+          Standard
+        </th>
+        <th class="text-left">
           Price
         </th>
         <th class="text-left">
@@ -63,6 +66,7 @@
             <input type="checkbox" :checked="room.reserved > 0" disabled/>
           </td>
           <td>{{ room.title }}</td>
+          <td>{{ room.room_standard }}</td>
           <td>{{ room.price }}</td>
           <td>{{ room.floor }}</td>
           <td>{{ room.sleeps }}</td>

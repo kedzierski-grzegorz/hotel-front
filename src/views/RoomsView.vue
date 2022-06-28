@@ -189,7 +189,12 @@ export default {
     methods: {
         async getRooms() {
             try {
-                const rooms = await axios.get('/rooms')
+                let rooms = [];
+                if (this.date && this.date.length === 2) {
+                  rooms = await axios.get('/rooms?start_date=' + new Date(this.date[0]).toJSON() + '&end_date=' + new Date(this.date[1]).toJSON())
+                } else {
+                  rooms = await axios.get('/rooms')
+                }
 
                 //  Clear rooms array
                 this.rooms = []
@@ -229,17 +234,15 @@ export default {
                 await this.getRooms()
 
                 //  Filter rooms
-                const newRooms = (this.rooms.filter( async (room) => {
-                    return ( 
-                        this.economic ? room.room_standard == "ECONOMIC" : true
-                        && this.standard ? room.room_standard == "STANDARD": true
-                        && this.premium ? room.room_standard == "PREMIUM" : true
-                        && !isNaN(this.minPrice) ? room.price > this.minPrice : true
-                        && !isNaN(this.maxPrice) ? room.price > this.maxPrice : true
-                        && room.sleeps >= this.select
-                    )
-                }))
-
+                const newRooms = this.rooms.filter(room =>
+                  (!this.economic || room.room_standard === "ECONOMIC")
+                  && (!this.standard || room.room_standard === "STANDARD")
+                  && (!this.premium || room.room_standard === "PREMIUM")
+                  && (isNaN(this.minPrice) || room.price >= this.minPrice)
+                  && (isNaN(this.maxPrice) || room.price <= this.maxPrice)
+                  && room.sleeps >= this.select
+                );
+              console.log(newRooms)
                 this.rooms = newRooms
             } catch (err) {
                 console.log(err.message)
