@@ -35,7 +35,8 @@ const AdminService = {
             floor: room.floor,
             price: room.price,
             sleeps: room.sleeps,
-            img_link: room.img_link
+            img_link: room.img_link,
+            room_standard: room.room_standard
         })).data?.id ?? 0;
     },
 
@@ -46,7 +47,8 @@ const AdminService = {
             floor: room.floor,
             price: room.price,
             sleeps: room.sleeps,
-            img_link: room.img_link
+            img_link: room.img_link,
+            room_standard: room.room_standard
         });
     },
 

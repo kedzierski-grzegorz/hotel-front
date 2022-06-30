@@ -18,11 +18,24 @@
         </v-card-title>
 
         <form class="py-4 px-4" @submit.prevent="save()" @keyup.enter="save()">
-          <v-text-field
-            label="Title"
-            v-model="v$.title.$model"
-            :error-messages="v$.title.$error ? 'Title is required' : ''"
-          ></v-text-field>
+          <v-row>
+            <v-col>
+              <v-text-field
+                  label="Title"
+                  v-model="v$.title.$model"
+                  :error-messages="v$.title.$error ? 'Title is required' : ''"
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-select
+                  :items="['ECONOMIC', 'STANDARD', 'PREMIUM']"
+                  filled
+                  v-model="v$.room_standard.$model"
+                  :error-messages="v$.room_standard.$error ? 'Room\'s standard is required' : ''"
+                  label="Room standard"
+              ></v-select>
+            </v-col>
+          </v-row>
           <v-row>
             <v-col>
               <v-text-field
@@ -127,6 +140,7 @@ export default {
 
       v$: useVuelidate(),
       title: "",
+      room_standard: "",
       floor: 1,
       price: 1,
       description: "",
@@ -145,6 +159,7 @@ export default {
   validations() {
     return {
       title: { required },
+      room_standard: { required },
       floor: { required },
       price: { required },
       sleeps: { required },
@@ -175,6 +190,7 @@ export default {
         this.v$.imgLink.$model = this.room.img_link;
         this.v$.floor.$model = this.room.floor;
         this.v$.price.$model = this.room.price;
+        this.v$.room_standard.$model = this.room.room_standard;
         this.v$.sleeps.$model = this.room.sleeps;
         this.v$.description.$model = this.room.description;
 
@@ -190,6 +206,7 @@ export default {
       this.roomId = 0;
       this.room = undefined;
       this.v$.title.$model = "";
+      this.v$.room_standard.$model = "";
       this.v$.floor.$model = 1;
       this.v$.price.$model = 1;
       this.v$.sleeps.$model = 1;
@@ -219,6 +236,7 @@ export default {
       }
 
       this.room.title = this.v$.title.$model;
+      this.room.room_standard = this.v$.room_standard.$model;
       this.room.floor = this.v$.floor.$model;
       this.room.price = this.v$.price.$model;
       this.room.sleeps = this.v$.sleeps.$model;
